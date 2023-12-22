@@ -1,25 +1,25 @@
 'use client'
 
-import { useForm } from "react-hook-form"
+import { updateEmployee } from "@/lib/employee"
+import { TUpdateEmployeeSchema, updateEmployeeSchema } from "@/lib/schema/employeeSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { addEmployeeSchema, TAddEmployeeSchema } from "@/lib/schema/employeeSchema"
 import { useRouter } from "next/navigation"
-import { addEmployees } from "@/lib/employee"
+import { useForm } from "react-hook-form"
 
-export default function AddEmployeeForm() {
+export default function UpdateEmployeeForm({ employee }: { employee: Employee }) {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, defaultValues },
         reset,
-        setError
-    } = useForm<TAddEmployeeSchema>({
-        resolver: zodResolver(addEmployeeSchema)
+        setError,
+    } = useForm<TUpdateEmployeeSchema>({
+        resolver: zodResolver(updateEmployeeSchema)
     })
     const router = useRouter()
 
-    const onSubmit = async (data: TAddEmployeeSchema) => {
-        const response = await addEmployees(data)
+    const onSubmit = async (data: TUpdateEmployeeSchema) => {
+        const response = await updateEmployee(employee.id, data)
 
         const responseData = await response.json()
 
@@ -28,8 +28,6 @@ export default function AddEmployeeForm() {
             console.log(responseData.message)
             return
         }
-
-        console.log(responseData)
 
         if (responseData.errors) {
             const errors = responseData.errors
@@ -76,6 +74,7 @@ export default function AddEmployeeForm() {
                     <label className="form-label">Name</label>
                     <input
                         {...register('name')}
+                        defaultValue={employee?.name}
                         type="text"
                         className={`form-control ${errors.name && 'is-invalid'}`} />
                     {errors.name && (
@@ -88,6 +87,7 @@ export default function AddEmployeeForm() {
                     <label className="form-label">Email</label>
                     <input
                         {...register('email')}
+                        defaultValue={employee?.email}
                         type="text"
                         className={`form-control ${errors.email && 'is-invalid'}`} />
                     {errors.email && (
@@ -100,9 +100,10 @@ export default function AddEmployeeForm() {
                     <label className="form-label">Role</label>
                     <select
                         {...register('role')}
+                        defaultValue={Number(employee?.role)}
                         className={`form-select ${errors.role && 'is-invalid'}`}
                         required>
-                        <option selected disabled>Select Role</option>
+                        <option selected disabled>Select Publish</option>
                         <option value="ADMIN">ADMIN</option>
                         <option value="ENGINEER">ENGINEER</option>
                         <option value="INTERN">INTERN</option>
@@ -117,6 +118,7 @@ export default function AddEmployeeForm() {
                     <label className="form-label">Password</label>
                     <input
                         {...register('password')}
+                        defaultValue={employee?.password}
                         type="text"
                         className={`form-control ${errors.password && 'is-invalid'}`} />
                     {errors.password && (

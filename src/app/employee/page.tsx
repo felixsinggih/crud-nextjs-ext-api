@@ -13,6 +13,7 @@ export default async function EmployeePage() {
             <td>{employee.email}</td>
             <td>{employee.role}</td>
             <td>
+                <Link href={`/employee/${employee.id}`} className='btn btn-sm btn-success'>Edit</Link>
                 <DeleteEmployee employee={employee} />
             </td>
         </tr>

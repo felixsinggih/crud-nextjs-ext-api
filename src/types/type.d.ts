@@ -2,5 +2,6 @@ type Employee = {
     'id': number,
     'name': string,
     'email': string,
-    'role': string
+    'role': string,
+    'password': string
 }
