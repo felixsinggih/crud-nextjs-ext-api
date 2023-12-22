@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 export default function DeleteEmployee({ employee }: { employee: Employee }) {
     const router = useRouter()
 
-    const handleDelete = async (id: Number) => {
-        const response = await deleteEmployee(employee.id)
+    const handleDelete = async (id: number) => {
+        const response = await deleteEmployee(id)
 
         const responseData = await response.json()
 

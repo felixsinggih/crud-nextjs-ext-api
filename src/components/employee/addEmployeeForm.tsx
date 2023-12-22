@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { addEmployeeSchema, TAddEmployeeSchema } from "@/lib/schema/employee/addSchema"
 import { useRouter } from "next/navigation"
+import { addEmployees } from "@/lib/employee"
 
 export default function AddEmployeeForm() {
     const {
@@ -18,18 +19,7 @@ export default function AddEmployeeForm() {
     const router = useRouter()
 
     const onSubmit = async (data: TAddEmployeeSchema) => {
-        const response = await fetch('http://localhost:3001/employees', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: data.name,
-                email: data.email,
-                role: data.role,
-                password: data.password
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        const response = await addEmployees(data)
 
         const responseData = await response.json()
 
@@ -75,6 +65,7 @@ export default function AddEmployeeForm() {
             alert("Oops, something went wrong!")
         } else {
             router.push('/employee')
+            router.refresh()
         }
     }
 
