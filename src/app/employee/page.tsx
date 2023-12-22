@@ -1,5 +1,6 @@
-import { getEmployees } from "@/lib/getEmployee"
+import { getEmployees } from "@/lib/employee"
 import Link from "next/link"
+import DeleteEmployee from "./deleteEmployee"
 
 export default async function EmployeePage() {
     const employeesData: Promise<Employee[]> = getEmployees()
@@ -12,7 +13,7 @@ export default async function EmployeePage() {
             <td>{employee.email}</td>
             <td>{employee.role}</td>
             <td>
-
+                <DeleteEmployee employee={employee} />
             </td>
         </tr>
     ))
